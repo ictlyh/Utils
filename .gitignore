@@ -1,0 +1,16 @@
+*.rpm
+*.out
+*.o
+*.txt
+*.zip
+*.class
+*Golaxy*
+*Dsql*
+*dsql*
+server
+client
+*.log
+*.gcda
+*.gcno
+*.gcov
+core.*

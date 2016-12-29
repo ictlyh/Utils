@@ -168,13 +168,16 @@ int main() {
   memcpy(&buffer[15], (void *)&extension, 4);
   short fieldnum = 2;
   memcpy(&buffer[19], myhton((char *)&fieldnum, 2), 2);
-  int size = 1;
+  int size = 4;
   memcpy(&buffer[21], myhton((char *)&size, 4), 4);
-  char id = 'a';
-  memcpy(&buffer[25], (void *)&id, 1);
+  int id = 10;
+  memcpy(&buffer[25], (void *)&id, 4);
   size = 10;
-  memcpy(&buffer[26], myhton((char *)&size, 4), 4);
-  memcpy(&buffer[30], "bbbbbccccc", 10);
+  memcpy(&buffer[29], myhton((char *)&size, 4), 4);
+  memcpy(&buffer[33], "bbbbbccccc", 10);
+  short negative = -1;
+  memcpy(&buffer[43], myhton((char *)&negative, 2), 2);
+
 
   res = PQexec(conn, "COPY t FROM STDIN (FORMAT binary);");
   if (PQresultStatus(res) != PGRES_COPY_IN) {
@@ -183,7 +186,7 @@ int main() {
   } else {
     PQclear(res);
     cout << "Enter COPY_IN mode" << endl;
-    int copyRes = PQputCopyData(conn, buffer, 40);
+    int copyRes = PQputCopyData(conn, buffer, 45);
     if (copyRes == 1) {
       if (PQputCopyEnd(conn, NULL) == 1) {
         res = PQgetResult(conn);

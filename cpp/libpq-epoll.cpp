@@ -20,131 +20,102 @@
 
 #define MAXEVENTS 64
 
-int main (int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   int efd;
   epoll_event events[MAXEVENTS];
 
   efd = epoll_create1(0);
-  if (efd == -1)
-  {
+  if (efd == -1) {
     std::cout << "epoll_create" << std::endl;
-    abort ();
+    abort();
   }
 
   const char conninfo[] =
-    "postgresql://postgres@localhost?port=5432&dbname=postgres";
+      "postgresql://postgres@localhost?port=5432&dbname=postgres";
   PGconn *conn = PQconnectdb(conninfo);
   const ConnStatusType &connStatusType = PQstatus(conn);
-  if(connStatusType == CONNECTION_BAD)
-  {
+  if (connStatusType == CONNECTION_BAD) {
     std::cout << "pg connection not OK" << std::endl;
-    if (conn)
-    {
+    if (conn) {
       PQfinish(conn);
     }
     exit(1);
-  }
-  else
-  {
+  } else {
     std::cout << "pg connection OK" << std::endl;
   }
   const char *query = "SELECT * FROM tb1";
   int querySent = PQsendQuery(conn, query);
-  if (querySent == 0)
-  {
+  if (querySent == 0) {
     std::cout << PQerrorMessage(conn);
     PQfinish(conn);
     exit(1);
-  }
-  else
-  {
+  } else {
     std::cout << "Send query " << query << std::endl;
   }
   int sock = PQsocket(conn);
-  if (sock < 0)
-  {
+  if (sock < 0) {
     std::cout << "pg no sock" << std::endl;
     PQfinish(conn);
     exit(1);
-  }
-  else
-  {
+  } else {
     std::cout << "get socket of pg connection OK" << std::endl;
   }
   epoll_event event;
-  event.events = EPOLLIN | EPOLLERR | EPOLLET ;
+  event.events = EPOLLIN | EPOLLERR | EPOLLET;
   event.data.fd = sock;
 
   // add the socket to the epoll file descriptors
-  if(epoll_ctl(efd, EPOLL_CTL_ADD, sock, &event) != 0)
-  {
+  if (epoll_ctl(efd, EPOLL_CTL_ADD, sock, &event) != 0) {
     std::cout << "epoll_ctl, adding socket fail" << std::endl;
     PQfinish(conn);
     exit(1);
-  }
-  else
-  {
+  } else {
     std::cout << "epoll_ctl, adding socket OK" << std::endl;
   }
 
   /* The event loop */
-  for (;;)
-  {
+  for (;;) {
     int n, i;
     n = epoll_wait(efd, events, MAXEVENTS, -1);
-    for (i = 0; i < n; i++)
-    {
-      if (events[i].events & EPOLLERR)
-      {
+    for (i = 0; i < n; i++) {
+      if (events[i].events & EPOLLERR) {
         std::cout << "epoll_ctl, socket error" << std::endl;
         PQfinish(conn);
         exit(1);
-      }
-      else
-      {
-        if (events[i].events & EPOLLIN) //socket is ready for reading
+      } else {
+        if (events[i].events & EPOLLIN) // socket is ready for reading
         {
           std::cout << "epoll_ctl, socket ready to read" << std::endl;
           int rc = PQconsumeInput(conn);
-          if (rc == 0)
-          {
+          if (rc == 0) {
             std::cout << PQerrorMessage(conn);
             PQfinish(conn);
             exit(1);
           }
           PGnotify *notify;
-          while ((notify = PQnotifies(conn)) != NULL)
-          {
+          while ((notify = PQnotifies(conn)) != NULL) {
             fprintf(stderr,
-                "ASYNC NOTIFY of '%s' received from backend PID %d\n",
-                notify->relname, notify->be_pid);
+                    "ASYNC NOTIFY of '%s' received from backend PID %d\n",
+                    notify->relname, notify->be_pid);
             PQfreemem(notify);
           }
-          if (PQisBusy(conn) == 0)
-          {
+          if (PQisBusy(conn) == 0) {
             PGresult *result;
-            while ((result = PQgetResult(conn)) != NULL)
-            {
-              if (PQresultStatus(result) != PGRES_TUPLES_OK)
-              {
+            while ((result = PQgetResult(conn)) != NULL) {
+              if (PQresultStatus(result) != PGRES_TUPLES_OK) {
                 fprintf(stderr, "FETCH ALL failed: %s", PQerrorMessage(conn));
                 PQclear(result);
                 PQfinish(conn);
                 exit(1);
-              }
-              else
-              {
+              } else {
                 int nFields = PQnfields(result);
-                for (i = 0; i < nFields; i++)
-                {
+                for (i = 0; i < nFields; i++) {
                   int ptype = PQftype(result, i);
                   std::cout << PQfname(result, i) << "\t";
                 }
                 std::cout << "\n------------\n";
                 /* next, print out the rows */
-                for (i = 0; i < PQntuples(result); i++)
-                {
+                for (i = 0; i < PQntuples(result); i++) {
                   for (int j = 0; j < nFields; j++)
                     std::cout << PQgetvalue(result, i, j) << "\t";
                   std::cout << "\n";

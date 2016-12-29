@@ -85,4 +85,3 @@ int main(int argc, char **argv) {
          arguments.dbname, arguments.format);
   exit(0);
 }
-

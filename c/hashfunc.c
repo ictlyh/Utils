@@ -146,7 +146,8 @@ typedef unsigned int uint32;   /* == 32 bits */
 
 /*
  * hash_any() -- hash a variable-length key into a 32-bit value
- *		k		: the key (the unaligned variable-length array of
+ *		k		: the key (the unaligned variable-length array
+ *of
  *bytes)
  *		len		: the length of the key, counting by bytes
  *

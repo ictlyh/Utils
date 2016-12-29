@@ -178,7 +178,6 @@ int main() {
   short negative = -1;
   memcpy(&buffer[43], myhton((char *)&negative, 2), 2);
 
-
   res = PQexec(conn, "COPY t FROM STDIN (FORMAT binary);");
   if (PQresultStatus(res) != PGRES_COPY_IN) {
     cout << "Not in COPY_IN mode";

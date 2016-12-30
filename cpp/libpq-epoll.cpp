@@ -52,17 +52,17 @@ int main(int argc, char *argv[]) {
   } else {
     std::cout << "Send query " << query << std::endl;
   }
-	/*
-	 * application that employs the EPOLLET flag should use nonblocking
-	 * file descriptors to avoid having a blocking read or write.
-	 * Reference: http://man7.org/linux/man-pages/man7/epoll.7.html
-	 */
-	if (PQsetnonblocking(conn, 1) == -1) {
-		std::cout << PQerrorMessage(conn);
-	}
-	else {
-		std::cout << "set non-blocking mode success" << std::endl;
-	}
+  /*
+   * application that employs the EPOLLET flag should use nonblocking
+   * file descriptors to avoid having a blocking read or write.
+   * Reference: http://man7.org/linux/man-pages/man7/epoll.7.html
+   */
+  if (PQsetnonblocking(conn, 1) == -1) {
+    std::cout << PQerrorMessage(conn);
+  }
+  else {
+    std::cout << "set non-blocking mode success" << std::endl;
+  }
   int sock = PQsocket(conn);
   if (sock < 0) {
     std::cout << "pg no sock" << std::endl;

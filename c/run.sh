@@ -30,6 +30,10 @@ cd ./socket
 sleep 1
 ./client 127.0.0.1 5000
 cd ..
+cd ./zeromq
+./server server.c &
+./client localhost 5557
+cd ..
 
 gcov curl-get.c
 gcov curl-post.c
@@ -51,6 +55,11 @@ gcov test-zombie.c
 gcov test-signal.c
 
 cd ./socket
+gcov server.c
+gcov client.c
+cd ..
+
+cd ./zeromq
 gcov server.c
 gcov client.c
 cd ..

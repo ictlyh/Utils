@@ -76,7 +76,8 @@ int main(int argc, char *argv[]) {
                             {controller, 0, ZMQ_POLLIN, 0}};
   while (true) {
     /* wait indefinitely for an event to occur */
-    rc = zmq_poll(items, 2, -1);
+    rc = zmq_poll(items, 2, 5000);
+	  if (rc == 0) break;
     if (rc == -1) /* error occurs */
     {
       fprintf(fp, "zmq_poll fail, errno %d, errmsg:%s\n", errno,

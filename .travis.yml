@@ -9,9 +9,6 @@ compiler:
 
 before_script:
   - psql -c 'create database libpq_demo;' -U postgres
-  - git clone https://github.com/zeromq/libzmq
-  - mkdir -p libzmq/build && cd libzmq/build
-  - cmake -DCMAKE_INSTALL_PREFIX:PATH=../../zeormq .. && make -j 4 && cd ../../
 
 script:
   - make clean -C c && make all -C c

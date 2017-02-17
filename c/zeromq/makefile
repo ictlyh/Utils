@@ -4,10 +4,10 @@ CL          = clang
 all: server client
 
 client: client.c
-	$(CL) $(CL_FLAGS) -o client client.c -lzmq -L$(TRAVIS_BUILD_DIR)/zeromq/lib -I$(TRAVIS_BUILD_DIR)/zeromq/include
+	$(CL) $(CL_FLAGS) -o client client.c -lzmq
 
 server: server.c
-	$(CL) $(CL_FLAGS) -o server server.c -lzmq -L$(TRAVIS_BUILD_DIR)/zeromq/lib -I$(TRAVIS_BUILD_DIR)/zeromq/include
+	$(CL) $(CL_FLAGS) -o server server.c -lzmq
 
 clean:
 	rm -rf server client *.gcno *.gcov *.gcda

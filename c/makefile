@@ -3,7 +3,7 @@ C           = gcc
 MAKE        = make
 
 targets=$(patsubst %.c,%.out,$(wildcard *.c))
-all: ${targets} socket zeromq
+all: ${targets} socket
 
 curl-get.out: curl-get.c
 	${C} ${C_FLAGS} -o $@ $^ -lcurl

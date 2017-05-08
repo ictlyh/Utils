@@ -62,6 +62,9 @@ test-zombie.out: test-zombie.c
 test-signal.out: test-signal.c
 	${C} ${C_FLAGS} -o $@ $^
  
+test-posix.out: test-posix.c
+	${C} ${C_FLAGS} -o $@ $^
+ 
 .PHONY: socket zeromq
 
 zeromq:

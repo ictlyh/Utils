@@ -34,6 +34,7 @@ cd ..
 #./server server.c &
 #./client localhost 5557
 #cd ..
+./test-posix.out
 
 gcov curl-get.c
 gcov curl-post.c
@@ -63,3 +64,4 @@ cd ..
 #gcov server.c
 #gcov client.c
 #cd ..
+gcov test-posix.c

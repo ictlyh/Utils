@@ -5,6 +5,7 @@ cd ${ROOT}
 
 ./curl-get.out
 ./curl-post.out
+./https.out https://www.google.com
 #./gen-offset.out
 ./gethostname.out
 ./hashfunc.out

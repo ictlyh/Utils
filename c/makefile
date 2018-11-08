@@ -10,6 +10,9 @@ curl-get.out: curl-get.c
 
 curl-post.out: curl-post.c
 	${C} ${C_FLAGS} -o $@ $^ -lcurl
+
+https.out: https.c
+	${C} ${C_FLAGS} -o $@ $^ -lcurl
  
 genoffset.out: genoffset.c
 	${C} ${C_FLAGS} -o $@ $^

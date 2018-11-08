@@ -39,6 +39,7 @@ cd ..
 
 gcov curl-get.c
 gcov curl-post.c
+gcov https.c
 #gcov gen-offset.c
 gcov gethostname.c
 gcov hashfunc.c

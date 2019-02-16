@@ -18,11 +18,11 @@ file_rw.out: file_rw.cc
 gen-data.out: gen-data.cc
 	${CC} ${CC_FLAGS} -o $@ $^
  
-libpq-demo.out: libpq-demo.cc
-	${CC} ${CC_FLAGS} -o $@ $^ -lpq
-
-libpq-epoll.out: libpq-epoll.cc
-	${CC} ${CC_FLAGS} -o $@ $^ -lpq    
+#libpq-demo.out: libpq-demo.cc
+#	${CC} ${CC_FLAGS} -o $@ $^ -lpq
+#
+#libpq-epoll.out: libpq-epoll.cc
+#	${CC} ${CC_FLAGS} -o $@ $^ -lpq    
  
 row_split.out: row_split.cc
 	${CC} ${CC_FLAGS} -o $@ $^
@@ -39,11 +39,11 @@ test-default-value.out: test-default-value.cc
 test-delete.out: test-delete.cc
 	${CC} ${CC_FLAGS} -o $@ $^
  
-test-gflags.out: test-gflags.cc
-	${CC} ${CC_FLAGS} -o $@ $^ -lgflags
- 
-test-glog.out: test-glog.cc
-	${CC} ${CC_FLAGS} -o $@ $^ -lglog
+#test-gflags.out: test-gflags.cc
+#	${CC} ${CC_FLAGS} -o $@ $^ -lgflags
+# 
+#test-glog.out: test-glog.cc
+#	${CC} ${CC_FLAGS} -o $@ $^ -lglog
  
 test-modulo.out: test-modulo.cc
 	${CC} ${CC_FLAGS} -o $@ $^

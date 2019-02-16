@@ -20,10 +20,16 @@ gen-data.out: gen-data.cc
  
 libpq-demo.out: libpq-demo.cc
 	${CC} ${CC_FLAGS} -o $@ $^ -lpq
+
+libpq-epoll.out: libpq-epoll.cc
+	${CC} ${CC_FLAGS} -o $@ $^ -lpq    
  
 row_split.out: row_split.cc
 	${CC} ${CC_FLAGS} -o $@ $^
- 
+
+smart-pointer.out: smart-pointer.cc
+	${CC} ${CC_FLAGS} -o $@ $^
+    
 square.out: square.cc
 	${CC} ${CC_FLAGS} -o $@ $^
  

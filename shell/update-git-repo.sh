@@ -40,6 +40,10 @@ function git_update {
             git stash pop >/dev/null
         fi
 
+        # clean
+        git reflog expire --expire=now --all; git gc --prune=now
+        git fetch --prune --all
+
     else
         echo "$0: Not a git repository: $1"
     fi
